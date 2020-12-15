@@ -9,9 +9,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /app/package.json
 
-# Create app directory
-#WORKDIR /usr/src/app
-
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
@@ -26,8 +23,8 @@ RUN yarn install
 # add app
 COPY . /app
 
-# Bundle app source
-# COPY . .
-
+# server.js uses port 8080 so open it in container
 EXPOSE 8080
+
+# run the server
 CMD [ "node", "server.js" ]
