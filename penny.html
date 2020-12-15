@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+          <meta charset="utf-8">
+          <!-- Cesium setup -->
+          <link href="https://cesiumjs.org/releases/1.54/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+          <script src="https://cesiumjs.org/releases/1.54/Build/Cesium/Cesium.js"></script>
+
+          <!-- Leaflet setup -->
+          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+          <!-- Make sure you put this AFTER Leaflet's CSS -->
+          <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+          integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+          crossorigin=""></script>
+    </head>
+    <body>
+
+<!--
+          <div id="n2yoContainer">
+              <script>
+                  var allpasses_n2yo = '1'; 
+                  var size_n2yo = 'large'; 
+              </script>
+              <script type="text/javascript" src="https://www.n2yo.com/js/widget-tracker.js"></script>
+          </div>
+-->
+
+<!-- <div id="Container" style="padding-bottom:56.25%; position:relative; display:block; width: 100%">
+	    <iframe id="UstreamIframe"
+		    width="100%" height="100%"
+		    src="https://www.ustream.tv/channel/17074538"
+		    frameborder="0"
+		    style="position:absolute; top:0; left: 0">
+        </iframe>
+</div> -->
+
+<!-- <div id="mapid" style="width: 600px; height: 400px;"></div> -->
+<button onclick="getLocation()">Locate</button>
+<div id="mapid" style="height: 400px;"></div>
+<script>
+
+  var startLat =  0;
+  var startLon =  0;
+
+//position  : Cesium.Cartesian3.fromDegrees(-118, 34),
+//  window.onload = function() {
+  //var startPos;
+  //var geoSuccess = function(position) {
+    //startPos = position;
+      //if (startPos.coords.latitude != null) {
+    ////document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    ////document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+          //startLat = startPos.coords.latitude;
+          //startLon = startPos.coords.longitude;
+      //} 
+  //}
+  //navigator.geolocation.getCurrentPosition(geoSuccess);
+//};
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    document.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  startLat = position.coords.latitude;
+  startLon = position.coords.longitude;
+  document.innerHTML = "Latitude: " + startLat + 
+  "<br>Longitude: " + startLon;
+  updateMarkerInfo(position);
+}
+
+	var mymap = L.map('mapid').setView([startLat, startLon], 13);
+    //position  : Cesium.Cartesian3.fromDegrees(-118, 34),
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+    //L.marker([51.5, -0.09]).addTo(mymap) 
+    // check for Geolocation support
+var locationSupportedMsg = "";
+if (navigator.geolocation) {
+  locationSupportedMsg = "Geolocation is supported! " + startLat + ", " + startLon;
+}
+else {
+  locationSupportedMsg = "Geolocation is NOT supported!";
+}
+	L.marker([startLat, startLon]).addTo(mymap)
+		.bindPopup(locationSupportedMsg).openPopup();
+
+	//L.circle([51.508, -0.11], 500, {
+	//	color: 'red',
+		//fillColor: '#f03',
+		//fillOpacity: 0.5
+	//}).addTo(mymap).bindPopup("I am a circle.");
+//
+	//L.polygon([
+		//[51.509, -0.08],
+		//[51.503, -0.06],
+		//[51.51, -0.047]
+	//]).addTo(mymap).bindPopup("I am a polygon.");
+
+	var popup = L.popup();
+
+function updateMarkerInfo(p) {
+  var currLat = p.coords.latitude;
+  var currLon = p.coords.longitude;
+    locationSupportedMsg = "Location: " + currLat + ", " + currLon;
+	L.marker([currLat, currLon]).addTo(mymap)
+		.bindPopup(locationSupportedMsg).openPopup();
+    L.map('mapid').flyTo([currLat, currLon],8);
+
+    var center = Cesium.Cartesian3.fromDegrees(currLon, currLat);
+viewer.camera.lookAt(center, new Cesium.Cartesian3(0.0, 0.0, 4200000.0));
+}
+
+</script>
+
+          <div id="cesiumContainer"/> 
+          <script>
+              Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwZjJmODI3Yi03ODRjLTQ0NGMtYmViZS1mNmUxN2YxZjU1YjAiLCJpZCI6NzYzOSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU1MDA0MDk4M30.9OIARyVHbdoPBbUBPLq_DkQZsr_ZoD3oAWUK32Lf1RY';
+
+              var viewer = new Cesium.Viewer('cesiumContainer', {timeline : false, animation : true,
+              
+    skyBox : new Cesium.SkyBox({
+        sources : {
+          positiveX : 'assets/stars/TychoSkymapII.t3_08192x04096_80_px_HD2.jpg',
+          negativeX : 'assets/stars/TychoSkymapII.t3_08192x04096_80_mx_HD2.jpg',
+          positiveY : 'assets/stars/TychoSkymapII.t3_08192x04096_80_py_HD2.jpg',
+          negativeY : 'assets/stars/TychoSkymapII.t3_08192x04096_80_my_HD2.jpg',
+          positiveZ : 'assets/stars/TychoSkymapII.t3_08192x04096_80_pz_HD2.jpg',
+          negativeZ : 'assets/stars/TychoSkymapII.t3_08192x04096_80_mz_HD2.jpg'
+        }
+    })
+              
+              });
+
+// For each example, include a link to CesiumWidget.css stylesheet in HTML head,
+// and in the body, include: <div id="cesiumContainer"></div>
+
+//Widget with no terrain and default Bing Maps imagery provider.
+//var widget = new Cesium.CesiumWidget('cesiumContainer');
+
+//Widget with OpenStreetMaps imagery provider and Cesium terrain provider hosted by AGI.
+/*
+var widget = new Cesium.CesiumWidget('cesiumContainer', {
+    //imageryProvider : Cesium.createOpenStreetMapImageryProvider(),
+    //terrainProvider : new Cesium.CesiumTerrainProvider({
+        //url : '//assets.agi.com/stk-terrain/world'
+    //}),
+    skyBox : new Cesium.SkyBox({
+        sources : {
+          positiveX : 'assets/stars/TychoSkymapII.t3_08192x04096_80_px_HD2.jpg',
+          negativeX : 'assets/stars/TychoSkymapII.t3_08192x04096_80_mx_HD2.jpg',
+          positiveY : 'assets/stars/TychoSkymapII.t3_08192x04096_80_py_HD2.jpg',
+          negativeY : 'assets/stars/TychoSkymapII.t3_08192x04096_80_my_HD2.jpg',
+          positiveZ : 'assets/stars/TychoSkymapII.t3_08192x04096_80_pz_HD2.jpg',
+          negativeZ : 'assets/stars/TychoSkymapII.t3_08192x04096_80_mz_HD2.jpg'
+        }
+    }),
+    // Show Columbus View map with Web Mercator projection
+    //sceneMode : Cesium.SceneMode.COLUMBUS_VIEW,
+    //mapProjection : new Cesium.WebMercatorProjection()
+});
+*/
+              var pinBuilder = new Cesium.PinBuilder();
+
+              // var bluePin = viewer.entities.add({
+                            // name : 'Blank blue pin',
+                            // position : Cesium.Cartesian3.fromDegrees(34,-118),
+                            // billboard : {
+                                // image : pinBuilder.fromColor(Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                                // verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                            // }
+                        // }); 
+
+             // var bluePin = viewer.entities.add({
+              //            ////position : Cesium.Cartesian3.fromDegrees(-75.170726, 39.9208667),
+                          //////position : Cesium.Cartesian3.fromDegrees(-118., 34.),
+                          //position  : Cesium.Cartesian3.fromDegrees(-118., 34.),
+                          //billboard : {
+                              //////image : pinBuilder.fromColor(Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                              //////                             verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                              //////image : pinBuilder.fromUrl("./image1.jpeg", Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                               //////                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                              //image : pinBuilder.fromUrl('http://localhost:8080/assets/image1.png',
+                                                          //Cesium.Color.ROYALBLUE, 
+                                                          //400)
+                          //}
+               //});
+
+var bluePin = viewer.entities.add({
+    //position : Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883),
+    position  : Cesium.Cartesian3.fromDegrees(-118, 34),
+    billboard : {
+        //image : 'Cesium_full/Apps/Sandcastle/images/Cesium_Logo_overlay.png', // default: undefined
+        image : './assets/image1.jpeg', // default: undefined
+        //image : pinBuilder.fromUrl("./assets/image1.png", Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                                    //verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+        show : true, // default
+        pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)
+        eyeOffset : new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+        horizontalOrigin : Cesium.HorizontalOrigin.CENTER, // default
+        verticalOrigin : Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+        scale : 2.0, // default: 1.0
+        //color : Cesium.Color.LIME, // default: WHITE
+        //rotation : Cesium.Math.PI_OVER_FOUR, // default: 0.0
+        alignedAxis : Cesium.Cartesian3.ZERO, // default
+        //width : 100, // default: undefined
+        //height : 25 // default: undefined
+    }
+});
+
+
+
+//var url = Cesium.buildModuleUrl('http://localhost:8080/assets/image1.png');
+//var groceryPin = Cesium.when(pinBuilder.fromUrl(url, Cesium.Color.GREEN, 120), function(canvas) {
+    //return viewer.entities.add({
+                //name : 'Grocery store',
+                ////position : Cesium.Cartesian3.fromDegrees(-75.1705217, 39.921786),
+        //billboard : {
+                        //image : canvas.toDataURL(),
+                        //verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+        //}
+    //});
+
+//});
+           </script>
+       </body>
+</html>

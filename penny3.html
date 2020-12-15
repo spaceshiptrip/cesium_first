@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+          <meta charset="utf-8">
+          <script src="https://cesiumjs.org/releases/1.54/Build/Cesium/Cesium.js"></script>
+          <link href="https://cesiumjs.org/releases/1.54/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    </head>
+    <body>
+          <div id="cesiumContainer" style="width: 700px; height:400px"></div>
+          <script>
+              Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwZjJmODI3Yi03ODRjLTQ0NGMtYmViZS1mNmUxN2YxZjU1YjAiLCJpZCI6NzYzOSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU1MDA0MDk4M30.9OIARyVHbdoPBbUBPLq_DkQZsr_ZoD3oAWUK32Lf1RY';
+
+              // var viewer = new Cesium.Viewer('cesiumContainer', {timeline : false, animation : false});
+
+    
+//This example uses a DigitalGlobe Maps API Recent Imagery along with Mapbox Streets and terrain Basemaps. Get your DigitalGlobe Maps API Access Token here: http://platform.digitalglobe.com/maps-api
+
+
+var imageryViewModels = [];
+
+
+imageryViewModels.push(new Cesium.ProviderViewModel({
+        name: 'DigitalGlobe Maps API: Recent Imagery',
+        iconUrl: Cesium.buildModuleUrl('https://platform.digitalglobe.com/examples/img/dgmapsapi_gbm.png'),
+        tooltip: 'Beautiful 50cm imagery focused on temporal currency \nhttps://platform.digitalglobe.com/maps-api',
+    creationFunction: function () {
+        return new Cesium.MapboxImageryProvider({
+                        mapId: 'digitalglobe.nal0g75k',
+            //Get your DigitalGlobe Maps API Access Token here: http://developer.digitalglobe.com/maps-api
+                        accessToken: 'ENTER YOUR MAPS API ACCESS TOKEN HERE',
+                        credit: 'DigitalGlobe Maps API'
+                    
+        });
+            
+    }
+
+}));
+
+
+
+imageryViewModels.push(new Cesium.ProviderViewModel({
+        name: 'Mapbox Terrain',
+        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/mapboxTerrain.png'),
+        tooltip: 'Satellite Imagery from Mapbox. \nhttp://mapbox.com',
+    creationFunction: function () {
+        return new Cesium.MapboxImageryProvider({
+                        mapId: 'mapbox.run-bike-hike',
+            //Get your Mapbox API Access Token here: http://mapbox.com
+                        accessToken: 'ENTER YOUR MAPS API ACCESS TOKEN HERE',
+                        credit: 'Mapbox'
+                    
+        });
+            
+    }
+
+}));
+
+
+imageryViewModels.push(new Cesium.ProviderViewModel({
+        name: 'Mapbox + OpenStreet-Map',
+        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/mapboxStreets.png'),
+        tooltip: 'The most useful Street and Reference basemap \
+    anywhere on the planet, sourced from Mapbox and OpenStreet-Map. \nhttp://mapbox.com',
+    creationFunction: function () {
+        return new Cesium.MapboxImageryProvider({
+                        mapId: 'mapbox.streets',
+            //Get your Mapbox API Access Token here: http://mapbox.com
+                        accessToken: 'ENTER YOUR MAPS API ACCESS TOKEN HERE',
+                        credit: 'Mapbox, OpenStreetMap Contributors'
+                    
+        });
+            
+    }
+
+}));
+
+
+//Create a CesiumViewer 
+var cesiumWidget = new Cesium.CesiumWidget('cesiumContainer', {
+        imageryProvider: false,
+        timeline: false,
+        animation: false,
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+                url: '//assets.agi.com/stk-terrain/world'
+            
+    })
+
+});
+
+//Finally, create the baseLayerPicker widget using our view models.
+var layers = cesiumWidget.imageryLayers;
+var baseLayerPicker = new Cesium.BaseLayerPicker('baseLayerPickerContainer', {
+        globe: cesiumWidget.scene.globe,
+        imageryProviderViewModels: imageryViewModels
+
+});
+
+           </script>
+       </body>
+</html>

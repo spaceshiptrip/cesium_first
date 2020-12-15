@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+          <meta charset="utf-8">
+          <script src="https://cesiumjs.org/releases/1.54/Build/Cesium/Cesium.js"></script>
+          <link href="https://cesiumjs.org/releases/1.54/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    </head>
+    <body>
+          <div id="cesiumContainer"></div>
+          <script>
+              Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwZjJmODI3Yi03ODRjLTQ0NGMtYmViZS1mNmUxN2YxZjU1YjAiLCJpZCI6NzYzOSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU1MDA0MDk4M30.9OIARyVHbdoPBbUBPLq_DkQZsr_ZoD3oAWUK32Lf1RY';
+
+              var viewer = new Cesium.Viewer('cesiumContainer', {timeline : false, animation : false});
+              //var viewer = new Cesium.Viewer("cesiumContainer", {
+                        //sceneMode: Cesium.SceneMode.SCENE3D,
+                        //infoBox: false,
+                        //geocoder: false,
+                        //timeline: false,
+                        //animation: false,
+                        //homeButton: false,
+                        //scene3DOnly: false,
+                        //baseLayerPicker: true,
+                        //sceneModePicker: true,
+                        //fullscreenButton: false,
+                        //projectionPicker: true,
+                        //selectionIndicator: false,
+                        //navigationHelpButton: false,
+                        //navigationInstructionsInitiallyVisible: false
+              //});
+
+              var pinBuilder = new Cesium.PinBuilder();
+
+              // var bluePin = viewer.entities.add({
+                            // name : 'Blank blue pin',
+                            // position : Cesium.Cartesian3.fromDegrees(34,-118),
+                            // billboard : {
+                                // image : pinBuilder.fromColor(Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                                // verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                            // }
+                        // }); 
+
+             // var bluePin = viewer.entities.add({
+              //            ////position : Cesium.Cartesian3.fromDegrees(-75.170726, 39.9208667),
+                          //billboard : {
+                              //////image : pinBuilder.fromColor(Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                              //////                             verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                              //////image : pinBuilder.fromUrl("./image1.jpeg", Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                               //////                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                              //image : pinBuilder.fromUrl('http://localhost:8080/assets/image1.png',
+                                                          //Cesium.Color.ROYALBLUE, 
+                                                          //400)
+                          //}
+               //});
+
+//var bluePin = viewer.entities.add({
+    ////position : Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883),
+    //billboard : {
+    //    //image : 'Cesium_full/Apps/Sandcastle/images/Cesium_Logo_overlay.png', // default: undefined
+        //image : './assets/image1.png', // default: undefined
+        ////image : pinBuilder.fromUrl("./assets/image1.png", Cesium.Color.ROYALBLUE, 48).toDataURL(),
+                                    ////verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+        //show : true, // default
+        //pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)
+        //eyeOffset : new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+        //horizontalOrigin : Cesium.HorizontalOrigin.CENTER, // default
+        //verticalOrigin : Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+        ////scale : 2.0, // default: 1.0
+        ////color : Cesium.Color.LIME, // default: WHITE
+        ////rotation : Cesium.Math.PI_OVER_FOUR, // default: 0.0
+        //alignedAxis : Cesium.Cartesian3.ZERO, // default
+        ////width : 100, // default: undefined
+        ////height : 25 // default: undefined
+    //}
+//});
+
+
+
+var url = Cesium.buildModuleUrl('http://localhost:8080/assets/image3.png');
+var groceryPin = Cesium.when(pinBuilder.fromUrl(url, Cesium.Color.GREEN, 48), function(canvas) {
+    return viewer.entities.add({
+        name      : 'Penny\'s Playground',
+        position  : Cesium.Cartesian3.fromDegrees(-118, 34),
+        billboard : {
+                        image : canvas.toDataURL(),
+                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+        }
+    });
+});
+
+//var url = Cesium.buildModuleUrl('http://localhost:8080/assets/image1.png');
+//var groceryPin = Cesium.when(pinBuilder.fromUrl(url, Cesium.Color.GREEN, 120), function(canvas) {
+    //return viewer.entities.add({
+                //name : 'Grocery store',
+                ////position : Cesium.Cartesian3.fromDegrees(-75.1705217, 39.921786),
+        //billboard : {
+                        //image : canvas.toDataURL(),
+                        //verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+        //}
+    //});
+
+//});
+           </script>
+       </body>
+</html>

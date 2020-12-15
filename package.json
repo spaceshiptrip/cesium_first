@@ -1,0 +1,30 @@
+{
+  "name": "cesium_first",
+  "version": "1.0.0",
+  "description": "testing out mapping stuff",
+  "main": "server.js",
+  "dependencies": {
+    "cesium": "^1.54.0",
+    "connect": "^3.6.6",
+    "leaflet": "^1.4.0",
+    "satellite.js": "^3.0.0",
+    "serve-static": "^1.13.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://spaceshiptrip@bitbucket.org/spaceshiptrip/cesium_first.git"
+  },
+  "keywords": [
+    "cesium",
+    "leaflet",
+    "node"
+  ],
+  "author": "Jay Torres",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/spaceshiptrip/cesium_first#readme"
+}
